@@ -29,5 +29,3 @@ The project follows the Medallion Architecture (Bronze → Silver → Gold), usi
 ### Dashboard Preview
 <img width="1917" height="1000" alt="image" src="https://github.com/user-attachments/assets/7986e643-48cc-4dce-ad25-b854c155bcb8" />
 
-
-![E-Commerce Dashboard](dashboard_preview.png)
