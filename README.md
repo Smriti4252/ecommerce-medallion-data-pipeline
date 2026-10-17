@@ -1,154 +1,33 @@
 # E-Commerce Medallion Data Pipeline
 
-This project is an end-to-end data pipeline built to process e-commerce sales data and prepare it for analysis.
+Built an end-to-end data pipeline to process raw e-commerce sales data and turn it into clean, analysis-ready datasets.
 
-The raw data is loaded into PostgreSQL, cleaned and transformed using PySpark, and stored in DuckDB for analytical queries. The final datasets contain daily sales information and product category performance, which are displayed through a Streamlit dashboard.
+The project follows the Medallion Architecture (Bronze → Silver → Gold), using PostgreSQL for raw data storage, PySpark for data cleaning, and DuckDB for analytical processing.
 
-The project follows the Medallion Architecture, with separate Bronze, Silver, and Gold layers.
+### What I Worked On
 
-## Architecture
+- Loaded raw e-commerce sales data into PostgreSQL.
+- Used PySpark to remove duplicate records, filter invalid quantities, and standardize data types.
+- Stored cleaned data in DuckDB for further analysis.
+- Created Gold-layer datasets for daily sales and product category performance using SQL.
+- Built an interactive dashboard using Streamlit and Plotly.
+- Worked with Apache Airflow and Docker for pipeline orchestration.
 
-```mermaid
-graph LR
-    A[PostgreSQL - Bronze] --> B[PySpark - Data Cleaning]
-    B --> C[DuckDB - Silver]
-    C --> D[DuckDB - Gold]
-    D --> E[Streamlit Dashboard]
-    F[Apache Airflow] -. Orchestration .-> A
-    F -. Orchestration .-> B
-    F -. Orchestration .-> D
-```
+### Data Processing Results
 
-## Tech Stack
+| Dataset | Records |
+|---|---:|
+| Raw sales data | 12,180 |
+| Cleaned sales data | 11,814 |
+| Daily sales aggregates | 829 |
+| Category performance | 8 |
 
-- Python 3.11
-- PostgreSQL
-- PySpark 3.5.1
-- Pandas
-- DuckDB
-- Apache Airflow
-- Docker
-- Streamlit
-- Plotly
+### Tech Stack
 
-## Data Pipeline
+`Python` `PostgreSQL` `PySpark` `Pandas` `DuckDB` `SQL` `Apache Airflow` `Docker` `Streamlit` `Plotly`
 
-### Bronze Layer
-
-The raw sales data is loaded from a CSV file into PostgreSQL. This layer preserves the source data before transformation.
-
-The initial dataset contains 12,180 rows, including duplicate records, missing ratings, and inconsistent formatting.
-
-### Silver Layer
-
-PySpark is used to clean and transform the raw data. The process removes duplicate records, filters invalid quantities, and standardizes data types.
-
-The cleaned data is stored in DuckDB for further analysis.
-
-After cleaning, the dataset contains 11,814 rows.
-
-### Gold Layer
-
-DuckDB SQL is used to create aggregated datasets for reporting.
-
-Two datasets are generated:
-
-- `gold.daily_sales`: Daily sales data, with cancelled orders excluded.
-- `gold.category_performance`: Aggregated performance metrics for product categories.
-
-The daily sales dataset contains 829 rows, while the category performance dataset contains 8 rows.
-
-## Data Quality Results
-
-| Layer | Table | Rows |
-|---|---|---:|
-| Bronze | `raw_sales` | 12,180 |
-| Silver | `silver.sales_cleaned` | 11,814 |
-| Gold | `gold.daily_sales` | 829 |
-| Gold | `gold.category_performance` | 8 |
-
-The raw dataset contains 180 exact duplicate records and 6,150 missing ratings. The cleaning process removes duplicates and filters invalid quantities before generating the analytical datasets.
-
-## Dashboard
-
-The Streamlit dashboard presents the processed data in a visual format, making it easier to explore daily sales trends and product category performance.
-
-Add a screenshot of your dashboard to the project folder as `dashboard_preview.png`.
-
-<img width="1917" height="1000" alt="image" src="https://github.com/user-attachments/assets/c2a1996d-2620-458e-ac20-87c4d03a2c01" />
+### Dashboard Preview
+<img width="1917" height="1000" alt="image" src="https://github.com/user-attachments/assets/7986e643-48cc-4dce-ad25-b854c155bcb8" />
 
 
-## Project Structure
-
-```text
-ecommerce-medallion-pipeline/
-├── scripts/
-│   ├── 01_load_to_postgres.py
-│   ├── 02_spark_clean_to_silver.py
-│   └── 03_build_gold.py
-├── dashboard.py
-├── requirements.txt
-├── README.md
-└── dashboard_preview.png
-```
-
-This structure is illustrative. Update it to match the actual files in your repository.
-
-## Running the Project Locally
-
-### 1. Clone the repository
-
-```bash
-git clone <YOUR_REPOSITORY_URL>
-cd ecommerce-medallion-pipeline
-```
-
-### 2. Create a virtual environment
-
-On Windows:
-
-```powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
-
-### 3. Configure PostgreSQL
-
-Start PostgreSQL and create a database named `etl_project`.
-
-Update the database connection settings in `scripts/01_load_to_postgres.py` and ensure the input CSV file is available at the expected location.
-
-### 4. Run the pipeline
-
-Run the scripts in order:
-
-```bash
-python scripts/01_load_to_postgres.py
-python scripts/02_spark_clean_to_silver.py
-python scripts/03_build_gold.py
-```
-
-### 5. Start the dashboard
-
-```bash
-streamlit run dashboard.py
-```
-
-Open `http://localhost:8501` in your browser.
-
-### 6. Run Airflow
-
-If the project includes a configured Docker Compose file, start the services with:
-
-```bash
-docker compose up -d
-```
-
-The Airflow interface is available at `http://localhost:8080` when the services are running and configured correctly.
-
-## What I Learned
-
-While building this project, I worked with different stages of a data pipeline, from loading raw data to preparing datasets for reporting. It also gave me practical experience with PySpark transformations, SQL aggregations, data quality checks, and connecting processed data to a dashboard.
-
-The next improvements I want to work on include incremental processing, automated data quality tests, and better pipeline monitoring.
+![E-Commerce Dashboard](dashboard_preview.png)
