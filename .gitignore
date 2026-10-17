@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+tmp/
+spark_temp/
+warehouse/*.duckdb
+data/
+logs/
